@@ -17,5 +17,5 @@ def do_experiment(coarse, prepro, method):
 # accuracy 16
 do_experiment(True, no_prepro, predict_random)
 
-# accuracy 66, but takes forever to process
+# accuracy 71, but takes forever to process
 do_experiment(True, stop_words_prepro, predict_levenshtein)

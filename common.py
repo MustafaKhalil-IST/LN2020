@@ -22,7 +22,7 @@ def train_and_predict(coarse, train_fname, target_q_fname, prepro, method):
     train_ls = train_coarse_ls if coarse else train_fine_ls
     new_qs = parse_q_file(target_q_fname)
     all_ls = COARSE_LABELS if coarse else FINE_LABELS
-    train_ls = prepro(train_qs)
+    train_qs = prepro(train_qs)
     new_qs = prepro(new_qs)
     return new_qs, method(all_ls, train_qs, train_ls, new_qs)
 
