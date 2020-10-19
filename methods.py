@@ -1,6 +1,7 @@
 import random
 from nltk import edit_distance
 
+
 def predict_random(all_ls, train_qs, train_ls, new_qs):
     res = []
     for q in new_qs:
@@ -10,6 +11,7 @@ def predict_random(all_ls, train_qs, train_ls, new_qs):
         # predicted_l = all_ls[0]
         res.append(predicted_l)
     return res
+
 
 def predict_levenshtein(all_ls, train_qs, train_ls, new_qs):
     idx = 0
@@ -29,5 +31,3 @@ def predict_levenshtein(all_ls, train_qs, train_ls, new_qs):
         res.append(candidate)
         idx += 1
     return res
-
-edit_distance('asd fgh jkl', 'asd zcazez jkl')
