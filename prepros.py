@@ -1,4 +1,8 @@
+import nltk
 from nltk.corpus import stopwords
+
+
+nltk.download('stopwords')
 
 
 def no_prepro(qs):
