@@ -30,6 +30,11 @@ def parse_train_file(fname):
     return coarse_ls, fine_ls, qs
 
 
+def get_questions_from_file(fname):
+    with open(fname, 'r') as f:
+        return [line.replace('\n', '') for line in f.readlines()]
+
+
 def parse_q_file(fname):
     qs = []
     with open(fname, 'r') as f:

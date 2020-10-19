@@ -1,6 +1,7 @@
 import random
 
 from file_ops import parse_train_file, parse_q_file
+from preprocess import combine_prepros
 
 random.seed(421)
 
@@ -17,13 +18,13 @@ FINE_LABELS = [
     'NUM:speed', 'NUM:temp', 'NUM:volsize', 'NUM:weight']
 
 
-def train_and_predict(coarse, train_fname, target_q_fname, prepro, method):
+def train_and_predict(coarse, train_fname, target_q_fname, prepros, method):
     train_coarse_ls, train_fine_ls, train_qs = parse_train_file(train_fname)
     train_ls = train_coarse_ls if coarse else train_fine_ls
     new_qs = parse_q_file(target_q_fname)
     all_ls = COARSE_LABELS if coarse else FINE_LABELS
-    train_qs = prepro(train_qs)
-    new_qs = prepro(new_qs)
+    train_qs = combine_prepros(train_qs, prepros)
+    new_qs = combine_prepros(new_qs, prepros)
     return new_qs, method(all_ls, train_qs, train_ls, new_qs)
 
 

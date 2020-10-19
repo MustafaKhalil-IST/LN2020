@@ -31,3 +31,7 @@ def predict_levenshtein(all_ls, train_qs, train_ls, new_qs):
         res.append(candidate)
         idx += 1
     return res
+
+def knn():
+    # TODO: k nearest neighbors, we will use sklearn to do that
+    pass
