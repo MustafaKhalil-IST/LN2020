@@ -2,6 +2,7 @@ import random
 
 from file_ops import parse_train_file, parse_q_file
 
+random.seed(421)
 
 COARSE_LABELS = ['ABBR', 'DESC', 'ENTY', 'HUM', 'LOC', 'NUM']
 FINE_LABELS = [
@@ -26,9 +27,11 @@ def train_and_predict(coarse, train_fname, target_q_fname):
 
 def do_train_and_predict(all_ls, train_qs, train_ls, new_qs):
     res = []
-    # filling with random
     for q in new_qs:
+        # filling with random
         predicted_l = random.choice(all_ls)
+        # filling with constant
+        # predicted_l = all_ls[0]
         res.append(predicted_l)
     return new_qs, res
 

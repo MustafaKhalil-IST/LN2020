@@ -1,7 +1,7 @@
 from file_ops import *
 from predict import do_evaluate, train_and_predict
 
-coarse = True
+coarse = False
 
 new_qs, predicted_ls = train_and_predict(coarse, 'TRAIN.txt', 'DEV-questions.txt')
 
