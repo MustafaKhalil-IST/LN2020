@@ -1,19 +1,13 @@
 import sys
 
-def process_coarse(fname):
-    print('process_coarse')
-    with open(fname, 'r') as f:
-        print(f.readlines())
-
-def process_fine(fname):
-    print('process_fine')
-    with open(fname, 'r') as f:
-        print(f.readlines())
+from predict import train_and_predict
 
 args = sys.argv
+coarse = args[1] == '-coarse'
+train_fname = args[2]
+target_q_fname = args[3]
 
-if args[1] == '-coarse':
-    process_coarse(args[2])
+_, predicted_ls = train_and_predict(coarse, train_fname, target_q_fname)
 
-if args[1] == '-fine':
-    process_fine(args[2])
+for l in predicted_ls:
+    print(l)
