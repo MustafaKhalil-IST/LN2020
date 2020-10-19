@@ -17,23 +17,12 @@ FINE_LABELS = [
     'NUM:speed', 'NUM:temp', 'NUM:volsize', 'NUM:weight']
 
 
-def train_and_predict(coarse, train_fname, target_q_fname):
+def train_and_predict(coarse, train_fname, target_q_fname, method):
     train_coarse_ls, train_fine_ls, train_qs = parse_train_file(train_fname)
     train_ls = train_coarse_ls if coarse else train_fine_ls
     new_qs = parse_q_file(target_q_fname)
     all_ls = COARSE_LABELS if coarse else FINE_LABELS
-    return do_train_and_predict(all_ls, train_qs, train_ls, new_qs)
-
-
-def do_train_and_predict(all_ls, train_qs, train_ls, new_qs):
-    res = []
-    for q in new_qs:
-        # filling with random
-        predicted_l = random.choice(all_ls)
-        # filling with constant
-        # predicted_l = all_ls[0]
-        res.append(predicted_l)
-    return new_qs, res
+    return new_qs, method(all_ls, train_qs, train_ls, new_qs)
 
 
 def do_evaluate(true_ls, predicted_ls):

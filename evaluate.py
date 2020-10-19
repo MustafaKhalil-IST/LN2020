@@ -1,7 +1,7 @@
 import sys
 
 from file_ops import parse_l_file
-from predict import do_evaluate
+from common import do_evaluate
 
 args = sys.argv
 true_l_fname = args[1]
@@ -17,7 +17,7 @@ with open(predicted_l_fname, 'r') as f:
         curr_coarse = ':' not in line
         if coarse is None:
             coarse = curr_coarse
-            print('Mode is ' + ('Coarse' if coarse else 'Fine'))
+            print('coarse is {coarse}')
         elif coarse != curr_coarse:
             raise Exception("predicted labels contain both coarse and fine")
         predicted_ls.append(line)
