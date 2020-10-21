@@ -1,7 +1,7 @@
 from nltk import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 import string
 
 
@@ -26,21 +26,13 @@ def stemming(question):
     return " ".join([porter.stem(word) for word in filtered_words])
 
 
-def vectorize_tfidf(question):
-    with open('TRAIN.txt', 'r') as f:
-        corpus = f.readlines()
-    vectorizer = TfidfVectorizer()
-    X = vectorizer.fit_transform(corpus)
-    return X
-
-
 def combine_prepros(questions, preprocessors):
+    if 'token' in preprocessors:
+        questions = [tokenizing(question) for question in questions]
     if 'lower' in preprocessors:
         questions = [lowering(question) for question in questions]
     if 'ponc' in preprocessors:
         questions = [removing_ponctuations(question) for question in questions]
-    if 'token' in preprocessors:
-        questions = [tokenizing(question) for question in questions]
     if 'stem' in preprocessors:
         questions = [stemming(question) for question in questions]
     return questions

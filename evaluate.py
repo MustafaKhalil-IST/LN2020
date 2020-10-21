@@ -1,7 +1,19 @@
 import sys
 
 from file_ops import parse_l_file
-from common import do_evaluate
+
+
+def do_evaluate(true_ls, predicted_ls):
+    tot_c = len(true_ls)
+    if tot_c != len(predicted_ls):
+        raise Exception("true and predicted label counts don't match")
+    correct_c = 0
+    for true_l, predicted_l in zip(true_ls, predicted_ls):
+        if true_l == predicted_l:
+            correct_c += 1
+    res = round(100.0 * correct_c / tot_c)
+    print(f'Accuracy is {res}%')
+
 
 args = sys.argv
 true_l_fname = args[1]

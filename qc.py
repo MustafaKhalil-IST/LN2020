@@ -1,15 +1,16 @@
 import sys
-
-from common import train_and_predict
-from methods import predict_random
-from prepros import no_prepro
+from model import Model
 
 args = sys.argv
 coarse = args[1] == '-coarse'
-train_fname = args[2]
-target_q_fname = args[3]
+train_file_name = args[2]
+dev_questions_file_name = args[3]
 
-_, predicted_ls = train_and_predict(coarse, train_fname, target_q_fname, no_prepro, predict_random)
+model = Model("closest", coarse)
 
-for l in predicted_ls:
-    print(l)
+model.train(train_file_name)
+
+predicted_labels = model.predict(dev_questions_file_name, strategy='knn')
+
+for label in predicted_labels:
+    print(model.classes[label])
