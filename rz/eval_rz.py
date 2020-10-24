@@ -17,7 +17,7 @@ with open(predicted_l_fname, 'r') as f:
         curr_coarse = ':' not in line
         if coarse is None:
             coarse = curr_coarse
-            print('coarse is {coarse}')
+            print(f'coarse is {coarse}')
         elif coarse != curr_coarse:
             raise Exception("predicted labels contain both coarse and fine")
         predicted_ls.append(line)
