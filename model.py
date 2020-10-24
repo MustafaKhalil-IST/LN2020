@@ -1,10 +1,10 @@
-
 from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from preprocess import combine_prepros
+from nltk import edit_distance
 
 
 class Model:
@@ -52,13 +52,13 @@ class Model:
             self.fine_labels = le.fit_transform(fine_labels)
         self.classes = le.classes_
 
-    def predict(self, dev_file_name, strategy='rff'):
+    def predict(self, dev_file_name, strategy='rf', prepros=[]):
         with open(dev_file_name, "r") as f:
             questions = f.readlines()
 
         all_questions = self.train_questions + questions
 
-        all_questions = self.preprocess(all_questions, ['stem', 'lower'])
+        all_questions = self.preprocess(all_questions, prepros)
 
         all_vectors = self.vectorize(all_questions)
 
@@ -66,12 +66,14 @@ class Model:
         dev_vectors = all_vectors[len(self.train_questions):]
         train_labels = self.coarse_labels if self.coarse else self.fine_labels
 
-        if strategy == 'rff':
+        if strategy == 'rf':
             predicted_labels = self.rff_strategy(dev_vectors, train_labels, train_vectors)
         elif strategy == 'dt':
             predicted_labels = self.dt_strategy(dev_vectors, train_labels, train_vectors)
         elif strategy == 'knn':
             predicted_labels = self.knn_strategy(dev_vectors, train_labels, train_vectors)
+        elif strategy == 'levenshtein':
+            predicted_labels = self.levenshtein_strategy(questions, self.train_questions, train_labels)
         else:
             predicted_labels = self.rff_strategy(dev_vectors, train_labels, train_vectors)
 
@@ -93,4 +95,17 @@ class Model:
         knn = KNeighborsClassifier(n_neighbors=5)
         knn.fit(train_vectors, train_labels)
         predicted_labels = knn.predict(dev_vectors)
+        return predicted_labels
+
+    def levenshtein_strategy(self, dev_questions, train_questions, train_labels):
+        predicted_labels = []
+        for question in dev_questions:
+            print('Question: {}'.format(question))
+            closer_question, closer_distance = None, 100000
+            for i, train_question in enumerate(train_questions):
+                distance = edit_distance(train_question, question)
+                if distance < closer_distance:
+                    closer_question, closer_distance = (train_question, i), distance
+            predicted_labels.append(train_labels[closer_question[1]])
+            print('Label: {}'.format(self.classes[train_labels[closer_question[1]]]))
         return predicted_labels
