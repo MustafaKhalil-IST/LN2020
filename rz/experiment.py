@@ -1,6 +1,6 @@
 from rz.file_ops import *
 from rz.common import do_evaluate, train_and_predict
-from rz.methods import predict_levenshtein
+from rz.methods import predict_levenshtein, predict_random
 
 
 def do_experiment(coarse, prepros, method):
@@ -14,7 +14,7 @@ def do_experiment(coarse, prepros, method):
 
 
 # accuracy 16
-do_experiment(True, ['lower', 'token'], predict_levenshtein)
+do_experiment(True, [], predict_random)
 
 # accuracy 71, but takes forever to process
-# do_experiment(True, stop_words_prepro, predict_levenshtein)
+do_experiment(True, ['stop'], predict_levenshtein)

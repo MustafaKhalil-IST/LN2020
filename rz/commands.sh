@@ -7,3 +7,7 @@ python ./evaluate.py DEV-labels.txt develop56-fine.txt
 
 python qc.py -coarse TRAIN.txt TEST.txt > test56-coarse.txt
 python qc.py -fine   TRAIN.txt TEST.txt > test56-fine.txt
+
+# server
+docker run -it --rm --name mp1 -v "$PWD":/usr/src/myapp -w /usr/src/myapp python:3 bash
+export PYTHONPATH="${PYTHONPATH}:$PWD"
