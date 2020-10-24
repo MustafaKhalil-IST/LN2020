@@ -1,4 +1,6 @@
 import random
+import sys
+
 from nltk import edit_distance
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.neighbors import KNeighborsClassifier
@@ -23,7 +25,8 @@ def predict_levenshtein(all_ls, train_qs, train_ls, new_qs):
     new_qs = [q.split(' ') for q in new_qs]
     res = []
     for q in new_qs:
-        print(f'entry {idx} of {count}')
+        if idx % 10 == 0:
+            sys.stderr.write(f'entry {idx} of {count}\n')
         min_dist = 999999
         candidate = None
         for tl, tq in zip(train_ls, train_qs):
