@@ -14,7 +14,13 @@ def do_experiment(coarse, prepros, method):
 
 
 # accuracy 16
-do_experiment(True, [], predict_random)
+# do_experiment(True, [], predict_random)
 
-# accuracy 71, but takes forever to process
-do_experiment(True, ['stop'], predict_levenshtein)
+# accuracy 71
+# do_experiment(True, ['stop'], predict_levenshtein)
+
+# accuracy 72
+# do_experiment(True, ['stop_wh'], predict_levenshtein)
+
+# acc 70
+# do_experiment(True, ['token', 'lower', 'ponc', 'stem', 'stop_wh'], predict_levenshtein)

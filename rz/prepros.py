@@ -23,6 +23,18 @@ def stop_words(question):
     stop_words = stopwords.words('english')
     return " ".join([word for word in words if word not in stop_words])
 
+def stop_words_wh(question):
+    words = question.split(" ")
+    stop_words = stopwords.words('english')
+    stop_words.remove('what')
+    stop_words.remove('which')
+    stop_words.remove('who')
+    stop_words.remove('whom')
+    stop_words.remove('where')
+    stop_words.remove('why')
+    stop_words.remove('how')
+    return " ".join([word for word in words if word not in stop_words])
+
 
 def stemming(question):
     words = question.split(" ")
@@ -41,4 +53,6 @@ def combine_prepros(questions, preprocessors):
         questions = [stemming(question) for question in questions]
     if 'stop' in preprocessors:
         questions = [stop_words(question) for question in questions]
+    if 'stop_wh' in preprocessors:
+        questions = [stop_words_wh(question) for question in questions]
     return questions
