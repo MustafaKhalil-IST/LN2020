@@ -2,6 +2,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from preprocess import combine_prepros
 from nltk import edit_distance
@@ -20,6 +21,23 @@ class Model:
 
     def preprocess(self, questions, prepros):
         return combine_prepros(questions, prepros)
+
+    def extract_vocab(self, questions):
+        res = set()
+        for q in questions:
+            words = q.split(" ")
+            for w in words:
+                res.add(w)
+        return res
+
+    def tfidf_transform(self, train_qs, new_qs):
+        vocab = self.extract_vocab(train_qs)
+        self.count_vectorizer = CountVectorizer(vocabulary=vocab)
+        self.tfidf = TfidfTransformer(norm='l2')
+        train_vectors = self.count_vectorizer.fit_transform(train_qs)
+        train_vectors = self.tfidf.fit_transform(train_vectors)
+        new_vectors = self.tfidf.transform(self.count_vectorizer.transform(new_qs))
+        return train_vectors, new_vectors
 
     def vectorize(self, questions):
         train_terms = self.count_vectorizer.fit_transform(questions)
@@ -54,16 +72,13 @@ class Model:
 
     def predict(self, dev_file_name, strategy='rf', prepros=[]):
         with open(dev_file_name, "r") as f:
-            questions = f.readlines()
+            dev_questions = f.readlines()
 
-        all_questions = self.train_questions + questions
+        self.train_questions = self.preprocess(self.train_questions, prepros)
+        dev_questions = self.preprocess(dev_questions, prepros)
 
-        all_questions = self.preprocess(all_questions, prepros)
+        train_vectors, dev_vectors = self.tfidf_transform(self.train_questions, dev_questions)
 
-        all_vectors = self.vectorize(all_questions)
-
-        train_vectors = all_vectors[:len(self.train_questions)]
-        dev_vectors = all_vectors[len(self.train_questions):]
         train_labels = self.coarse_labels if self.coarse else self.fine_labels
 
         if strategy == 'rf':
@@ -72,8 +87,10 @@ class Model:
             predicted_labels = self.dt_strategy(dev_vectors, train_labels, train_vectors)
         elif strategy == 'knn':
             predicted_labels = self.knn_strategy(dev_vectors, train_labels, train_vectors)
+        elif strategy == 'svm':
+            predicted_labels = self.svm_strategy(dev_vectors, train_labels, train_vectors)
         elif strategy == 'levenshtein':
-            predicted_labels = self.levenshtein_strategy(questions, self.train_questions, train_labels)
+            predicted_labels = self.levenshtein_strategy(dev_questions, self.train_questions, train_labels)
         else:
             predicted_labels = self.rff_strategy(dev_vectors, train_labels, train_vectors)
 
@@ -106,4 +123,10 @@ class Model:
                 if distance < closer_distance:
                     closer_question, closer_distance = (train_question, i), distance
             predicted_labels.append(train_labels[closer_question[1]])
+        return predicted_labels
+
+    def svm_strategy(self, dev_vectors, train_labels, train_vectors):
+        knn = SVC()
+        knn.fit(train_vectors, train_labels)
+        predicted_labels = knn.predict(dev_vectors)
         return predicted_labels

@@ -25,7 +25,7 @@ prepros = {
     'lower_stem_token': ['lower', 'stem', 'token'],
 }
 
-strategies = ['levenshtein', 'knn', 'rff', 'dt']
+strategies = ['svm', 'knn', 'rff', 'dt']
 
 train_file_name = 'TRAIN.txt'
 dev_questions_file_name = 'DEV-questions.txt'
