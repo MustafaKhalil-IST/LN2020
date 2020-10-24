@@ -13,6 +13,7 @@ def do_evaluate(true_ls, predicted_ls):
             correct_c += 1
     res = round(100.0 * correct_c / tot_c)
     print(f'Accuracy is {res}%')
+    return res
 
 
 args = sys.argv

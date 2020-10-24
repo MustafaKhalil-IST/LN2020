@@ -3,14 +3,23 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 import string
+import re
+
+
+def clean(question):
+    def removing_extra_spaces(question):
+        return re.sub(r"\s\s+", r" ", question)
+
+    def removing_ponctuations(question):
+        return "".join([c for c in question if c not in string.punctuation])
+
+    def removing_breakline(question):
+        return question[:-1] if question[-1] == '\n' else question
+    return removing_extra_spaces(removing_ponctuations(removing_breakline(question)))
 
 
 def lowering(question):
     return question.lower()
-
-
-def removing_ponctuations(question):
-    return "".join([c for c in question if c not in string.punctuation])
 
 
 def tokenizing(question):
@@ -28,11 +37,9 @@ def stemming(question):
 
 def combine_prepros(questions, preprocessors):
     if 'token' in preprocessors:
-        questions = [tokenizing(question) for question in questions]
+        questions = [tokenizing(clean(question)) for question in questions]
     if 'lower' in preprocessors:
-        questions = [lowering(question) for question in questions]
-    if 'ponc' in preprocessors:
-        questions = [removing_ponctuations(question) for question in questions]
+        questions = [lowering(clean(question)) for question in questions]
     if 'stem' in preprocessors:
-        questions = [stemming(question) for question in questions]
+        questions = [stemming(clean(question)) for question in questions]
     return questions

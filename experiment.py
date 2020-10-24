@@ -14,7 +14,7 @@ def do_experiment(coarse, prepros, method):
 
 
 # accuracy 16
-do_experiment(True, ['lower', 'token'], predict_levenshtein)
+do_experiment(True, ['lower', 'ponc'], predict_levenshtein)
 
 # accuracy 71, but takes forever to process
 # do_experiment(True, stop_words_prepro, predict_levenshtein)
