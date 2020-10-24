@@ -31,4 +31,7 @@ def do_experiment(coarse, prepros, method):
 # do_experiment(True, ['token', 'lower', 'ponc', 'stem', 'stop_wh'], predict_knn)
 
 # coarse 79
-do_experiment(True, ['token', 'lower', 'ponc', 'stem', 'stop_wh'], predict_svm)
+# do_experiment(True, ['token', 'lower', 'ponc', 'stem', 'stop_wh'], predict_svm)
+
+# coarse 82
+# do_experiment(True, [], predict_svm)
