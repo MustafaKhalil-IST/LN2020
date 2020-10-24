@@ -25,4 +25,5 @@ def do_experiment(coarse, prepros, method):
 # acc 70
 # do_experiment(True, ['token', 'lower', 'ponc', 'stem', 'stop_wh'], predict_levenshtein)
 
+# acc 59
 do_experiment(True, ['token', 'lower', 'ponc', 'stem', 'stop_wh'], predict_knn)

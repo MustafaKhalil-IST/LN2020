@@ -1,4 +1,4 @@
-from nltk import word_tokenize
+from nltk import word_tokenize, re
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
@@ -10,6 +10,7 @@ def lowering(question):
 
 
 def removing_ponctuations(question):
+    question = re.sub(r"\s\s+", r" ", question)
     return "".join([c for c in question if c not in string.punctuation])
 
 

@@ -36,20 +36,22 @@ def predict_levenshtein(all_ls, train_qs, train_ls, new_qs):
     return res
 
 
-def vectorize(train_qs, new_qs):
-    all_qs = train_qs + new_qs
-    # set max_features?
-    count_vectorizer = CountVectorizer(analyzer='word')
-    all_vectors = count_vectorizer.fit_transform(all_qs)
-    train_vectors = all_vectors[:len(train_qs)]
-    new_vectors = all_vectors[len(train_qs):]
-    return train_vectors, new_vectors
+def extract_vocab(qs):
+    res = set()
+    for q in qs:
+        words = q.split(" ")
+        for w in words:
+            res.add(w)
+    return res
 
 
 def predict_knn(all_ls, train_qs, train_ls, new_qs):
-    train_vectors, new_vectors = vectorize(train_qs, new_qs)
-    # tfidf = TfidfTransformer(norm='l2')
-    # all_vectors = tfidf.fit_transform(all_vectors)
+    vocab = extract_vocab(train_qs)
+    count_vectorizer = CountVectorizer(vocabulary=vocab)
+    tfidf = TfidfTransformer(norm='l2')
+    train_vectors = count_vectorizer.fit_transform(train_qs)
+    train_vectors = tfidf.fit_transform(train_vectors)
+    new_vectors = tfidf.transform(count_vectorizer.transform(new_qs))
     knn = KNeighborsClassifier(n_neighbors=5)
     knn.fit(train_vectors, train_ls)
     predicted_ls = knn.predict(new_vectors)
