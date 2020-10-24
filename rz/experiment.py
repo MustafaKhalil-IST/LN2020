@@ -2,7 +2,7 @@ import sys
 
 from rz.file_ops import *
 from rz.common import do_evaluate, train_and_predict
-from rz.methods import predict_levenshtein, predict_random, predict_knn
+from rz.methods import predict_levenshtein, predict_random, predict_knn, predict_svm
 
 
 def do_experiment(coarse, prepros, method):
@@ -29,3 +29,6 @@ def do_experiment(coarse, prepros, method):
 
 # acc 59
 # do_experiment(True, ['token', 'lower', 'ponc', 'stem', 'stop_wh'], predict_knn)
+
+# coarse 79
+do_experiment(True, ['token', 'lower', 'ponc', 'stem', 'stop_wh'], predict_svm)
