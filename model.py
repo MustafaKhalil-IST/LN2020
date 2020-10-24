@@ -100,12 +100,10 @@ class Model:
     def levenshtein_strategy(self, dev_questions, train_questions, train_labels):
         predicted_labels = []
         for question in dev_questions:
-            print('Question: {}'.format(question))
             closer_question, closer_distance = None, 100000
             for i, train_question in enumerate(train_questions):
                 distance = edit_distance(train_question, question)
                 if distance < closer_distance:
                     closer_question, closer_distance = (train_question, i), distance
             predicted_labels.append(train_labels[closer_question[1]])
-            print('Label: {}'.format(self.classes[train_labels[closer_question[1]]]))
         return predicted_labels

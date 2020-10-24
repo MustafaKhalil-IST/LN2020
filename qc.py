@@ -10,7 +10,7 @@ model = Model("closest", coarse)
 
 model.train(train_file_name)
 
-predicted_labels = model.predict(dev_questions_file_name, strategy='knn')
+predicted_labels = model.predict(dev_questions_file_name, strategy='levenshtein')
 
 for label in predicted_labels:
     print(model.classes[label])
