@@ -15,20 +15,26 @@ def do_experiment(coarse, prepros, method):
     do_evaluate(true_ls, predicted_ls)
 
 
-# accuracy 16
+# coarse 16
 # do_experiment(True, [], predict_random)
 
-# accuracy 71
+# coarse 71
 # do_experiment(True, ['stop'], predict_levenshtein)
 
-# coarse 72%, fine 60%
+# coarse 72, fine 60
 # do_experiment(True, ['stop_wh'], predict_levenshtein)
 
-# acc 70
+# coarse 70
 # do_experiment(True, ['token', 'lower', 'ponc', 'stem', 'stop_wh'], predict_levenshtein)
 
-# acc 59
+# coarse 59
 # do_experiment(True, ['token', 'lower', 'ponc', 'stem', 'stop_wh'], predict_knn)
 
+# coarse 68, fine 56
+# do_experiment(False, [], predict_knn)
+
 # coarse 79
-do_experiment(True, ['token', 'lower', 'ponc', 'stem', 'stop_wh'], predict_svm)
+# do_experiment(True, ['token', 'lower', 'ponc', 'stem', 'stop_wh'], predict_svm)
+
+# coarse 82, fine 69
+# do_experiment(False, [], predict_svm)
