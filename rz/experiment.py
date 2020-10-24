@@ -1,6 +1,6 @@
 from rz.file_ops import *
 from rz.common import do_evaluate, train_and_predict
-from rz.methods import predict_levenshtein, predict_random
+from rz.methods import predict_levenshtein, predict_random, predict_knn
 
 
 def do_experiment(coarse, prepros, method):
@@ -24,3 +24,5 @@ def do_experiment(coarse, prepros, method):
 
 # acc 70
 # do_experiment(True, ['token', 'lower', 'ponc', 'stem', 'stop_wh'], predict_levenshtein)
+
+do_experiment(True, ['token', 'lower', 'ponc', 'stem', 'stop_wh'], predict_knn)

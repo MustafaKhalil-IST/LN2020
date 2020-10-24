@@ -1,5 +1,8 @@
 import random
 from nltk import edit_distance
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.preprocessing import LabelEncoder
 
 
 def predict_random(all_ls, train_qs, train_ls, new_qs):
@@ -32,6 +35,22 @@ def predict_levenshtein(all_ls, train_qs, train_ls, new_qs):
         idx += 1
     return res
 
-def knn():
-    # TODO: k nearest neighbors, we will use sklearn to do that
-    pass
+
+def vectorize(train_qs, new_qs):
+    all_qs = train_qs + new_qs
+    # set max_features?
+    count_vectorizer = CountVectorizer(analyzer='word')
+    all_vectors = count_vectorizer.fit_transform(all_qs)
+    train_vectors = all_vectors[:len(train_qs)]
+    new_vectors = all_vectors[len(train_qs):]
+    return train_vectors, new_vectors
+
+
+def predict_knn(all_ls, train_qs, train_ls, new_qs):
+    train_vectors, new_vectors = vectorize(train_qs, new_qs)
+    # tfidf = TfidfTransformer(norm='l2')
+    # all_vectors = tfidf.fit_transform(all_vectors)
+    knn = KNeighborsClassifier(n_neighbors=5)
+    knn.fit(train_vectors, train_ls)
+    predicted_ls = knn.predict(new_vectors)
+    return predicted_ls
