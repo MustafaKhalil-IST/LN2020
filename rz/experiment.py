@@ -21,7 +21,7 @@ def do_experiment(coarse, prepros, method):
 # accuracy 71
 # do_experiment(True, ['stop'], predict_levenshtein)
 
-# accuracy 72
+# coarse 72%, fine 60%
 # do_experiment(True, ['stop_wh'], predict_levenshtein)
 
 # acc 70
