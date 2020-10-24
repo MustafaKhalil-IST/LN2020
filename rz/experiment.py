@@ -1,6 +1,6 @@
-from file_ops import *
-from common import do_evaluate, train_and_predict
-from methods import predict_random, predict_levenshtein
+from rz.file_ops import *
+from rz.common import do_evaluate, train_and_predict
+from rz.methods import predict_levenshtein
 
 
 def do_experiment(coarse, prepros, method):

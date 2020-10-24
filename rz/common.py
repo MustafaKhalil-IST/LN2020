@@ -1,6 +1,6 @@
 import random
 
-from file_ops import parse_train_file, parse_q_file
+from rz.file_ops import parse_train_file, parse_q_file
 from preprocess import combine_prepros
 
 random.seed(421)

@@ -1,6 +1,16 @@
 import sys
 
-from file_ops import parse_l_file
+
+def parse_l_file(fname):
+    coarse_ls, fine_ls = [], []
+    with open(fname, 'r') as f:
+        for line in f.readlines():
+            line = line.replace('\n', '')
+            fine_l = line.split(' ')[0]
+            coarse_l = fine_l.split(':')[0]
+            coarse_ls.append(coarse_l)
+            fine_ls.append(fine_l)
+    return coarse_ls, fine_ls
 
 
 def do_evaluate(true_ls, predicted_ls):
