@@ -1,5 +1,8 @@
 from file_ops import parse_l_file
 from model import Model
+import sys
+
+coarse = sys.argv[1] == '-coarse'
 
 
 def do_evaluate(true_ls, predicted_ls):
@@ -30,7 +33,7 @@ strategies = ['svm', 'knn', 'rff', 'dt']
 train_file_name = 'TRAIN.txt'
 dev_questions_file_name = 'DEV-questions.txt'
 
-model = Model("closest", coarse=True)
+model = Model("closest", coarse=coarse)
 true_coarse_labels, true_fine_labels = parse_l_file('DEV-labels.txt')
 
 for strategy in strategies:
@@ -38,5 +41,5 @@ for strategy in strategies:
         model.train(train_file_name)
         predicted_labels_numbers = model.predict(dev_questions_file_name, strategy=strategy, prepros=prepros[prepro])
         predicted_labels = [model.classes[e] for e in predicted_labels_numbers]
-        acc = do_evaluate(true_coarse_labels, predicted_labels)
+        acc = do_evaluate(true_coarse_labels if coarse else true_fine_labels, predicted_labels)
         print("Strategy={} - Prepros={} - Acc={}".format(strategy, prepro, acc))
